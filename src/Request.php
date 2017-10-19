@@ -227,6 +227,7 @@ class Request
         }
         curl_setopt($this->_ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->_ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($this->_ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($this->_ch, CURLOPT_SSL_VERIFYPEER, false);             //是否验证ssl证书
         switch ($type) {
         case "GET":
@@ -249,7 +250,7 @@ class Request
     }
 
     /**
-     * 获取http请求返回头
+     * 获取http请求基础信息
      *
      * @return array httpheader
      *
@@ -265,7 +266,7 @@ class Request
     }
     
     /**
-     * 获取 http 请求返回 状态代码
+     * 获取http返回 状态代码
      *
      * @return string http代码
      *
@@ -280,6 +281,33 @@ class Request
         }
     }
     
+    /**
+     * 获取http响应信息头
+     * 
+     * @return array Http response headers
+     *
+     * @author: Kevin <qinqiwei@hotmail.com>
+     */
+    public function getHttpHeaders()
+    {
+        if ($this->_flag_if_have_run == true) {
+            $str_headers = curl_getinfo($this->_ch, CURLINFO_HEADER_OUT);
+            $tmp_arr = explode("\n", $str_headers);
+            $arr_headers = [];
+            unset($tmp_arr[0]);
+            foreach ($tmp_arr as $k => $v) {
+                $tmp_header_item = explode(":", $v);
+                if (sizeof($tmp_header_item)>1) {
+                    $arr_headers[trim($tmp_header_item[0])] = trim($tmp_header_item[1]);
+                }
+            }
+            
+            return $arr_headers;
+        } else {
+            throw new Exception("exec first!");
+        }
+    }
+
     /**
      * Auth_Basic 认证方式 设置用户名,密码
      *
