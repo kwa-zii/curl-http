@@ -1,0 +1,23 @@
+{
+    "name": "qinqw/curl-http",
+    "description": "One of the curl - based HTTP libraries implemented in PHP",
+    "homepage": "https://github.com/qinqw/curl-http",
+    "license": "Apache License",
+    "keywords": ["Http PHP Curl qinqw"],
+    "version": "1.0.1",
+    "authors": [
+        {
+            "name": "Kevin",
+            "email": "qinqiwei@hotmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Qinqw\\Curl\\Http\\": "src/"
+        }
+    }
+}
