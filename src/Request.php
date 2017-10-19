@@ -10,11 +10,11 @@
  */
 
 namespace Qinqw\Curl\Http;
- 
+
 /**
  * The Curl wrapper class library for HTTP requests
  * 
- * @category Crul_Http
+ * @category Curl_Http
  * @package  Qinqw\Curl\Http
  * @author   Kevin <qinqiwei@hotmail.com>
  * @date     2017-06-01
@@ -154,7 +154,7 @@ class Request
      *
      * @return mixed
      */
-    public function get($url, $headers = "")
+    public function get($url, $headers = [])
     {
         $this->requests($url, "GET", "", $headers);
     }
@@ -168,7 +168,7 @@ class Request
      *
      * @return mixed
      */
-    public function post($url, $params, $headers = "")
+    public function post($url, $params, $headers = [])
     {
         $this->requests($url, "POST", $params, $headers);
     }
@@ -182,7 +182,7 @@ class Request
      *
      * @return mixed
      */
-    public function put($url, $params, $headers = "")
+    public function put($url, $params, $headers = [])
     {
         $this->requests($url, "PUT", $params, $headers);
     }
@@ -196,7 +196,7 @@ class Request
      *
      * @return mixed
      */
-    public function delete($url, $params, $headers = "")
+    public function delete($url, $params, $headers = [])
     {
         $this->requests($url, "DELETE", $params, $headers);
     }
@@ -213,17 +213,18 @@ class Request
      *
      * @author: Kevin <qinqiwei@hotmail.com>
      */
-    public function requests($URL, $type, $params, $headers)
+    public function requests($URL, $type, $params, $headers=[])
     {
         //$ch = curl_init();
         $timeout = 25;
         if ($URL != "") {
             curl_setopt($this->_ch, CURLOPT_URL, $URL);                     //请求地址
         }
-        if ($headers!="") {
+        if ($headers==[]) {
+            $headers = array('Content-type: application/json');
             curl_setopt($this->_ch, CURLOPT_HTTPHEADER, $headers);
-        } else {
-            curl_setopt($this->_ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+        } elseif (is_array($headers)&&(sizeof($headers)>0)) {
+            curl_setopt($this->_ch, CURLOPT_HTTPHEADER, $headers);
         }
         curl_setopt($this->_ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->_ch, CURLOPT_CONNECTTIMEOUT, $timeout);
@@ -298,7 +299,9 @@ class Request
             foreach ($tmp_arr as $k => $v) {
                 $tmp_header_item = explode(":", $v);
                 if (sizeof($tmp_header_item)>1) {
-                    $arr_headers[trim($tmp_header_item[0])] = trim($tmp_header_item[1]);
+                    $tmp_header_key = trim($tmp_header_item[0]);
+                    $tmp_header_value = trim($tmp_header_item[1]);
+                    $arr_headers[$tmp_header_key] = $tmp_header_value;
                 }
             }
             
@@ -353,7 +356,8 @@ class Request
     public function setIp($ip)
     {
         if (!empty($ip)) {
-            curl_setopt($this->_ch, CURLOPT_HTTPHEADER, array("X-FORWARDED-FOR:".$ip, "CLIENT-IP:".$ip));
+            $headers = array("X-FORWARDED-FOR:".$ip, "CLIENT-IP:".$ip);
+            curl_setopt($this->_ch, CURLOPT_HTTPHEADER, $headers);
         }
         return $ip;
     }
