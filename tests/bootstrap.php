@@ -1,8 +1,13 @@
 <?php
 /**
- * Spl autoload register
+ * One of the curl - based HTTP libraries implemented in PHP
+ * bootstrap
  * 
- * @var mixed
+ * @category Crul_Http
+ * @package  Qinqw\Curl\Http
+ * @author   Kevin <qinqiwei@hotmail.com>
+ * @license  Apache License V2
+ * @link     https://github.com/qinqw/curl-http
  */
 
 spl_autoload_register( 
