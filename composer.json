@@ -2,9 +2,9 @@
     "name": "qinqw/curl-http",
     "description": "One of the curl - based HTTP libraries implemented in PHP",
     "homepage": "https://github.com/qinqw/curl-http",
-    "license": "Apache License",
+    "license": "Apache-2.0",
     "keywords": ["Http PHP Curl qinqw"],
-    "version": "1.0.1",
+    "type": "project",
     "authors": [
         {
             "name": "Kevin",
